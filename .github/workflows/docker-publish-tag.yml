@@ -67,11 +67,8 @@ jobs:
             ${{ env.IMAGE_NAME }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=semver,pattern={{raw}}
-          flavor: |
-            latest=true
-            prefix=
-            suffix=
+            ${{ steps.latesttag.outputs.tag }}
+            latest
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
