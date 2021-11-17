@@ -8,11 +8,10 @@ name: Docker
 on:
   push:
     branches: [ master ]
-    paths-ignore:
-      - 'README.md'
-      - 'readme/**'
-      - 'LICENSE'
-      - '.github/workflows/dockerhub-readme.yml'
+    paths:
+      - 'Dockerfile'
+      - 'root/**'
+      - '.github/workflows/docker-publish.yml'
 
 env:
   # Use docker.io for Docker Hub if empty
