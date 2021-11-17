@@ -11,7 +11,7 @@ mkdir -p "$dbdir_backup"
 mkdir -p "cachedir_tmp"
 
 # copy database to backup folder if it does not exist
-if [ ! -d "$dbdir_backup" ]; then
+if [[ ( ! -d "$dbdir_backup" ) || ( -d "$dbdir_backup" && ! "$(ls -A $dbdir_backup)" ) ]]; then
   echo "Backing up existing database..."
   rsync -acz --delete "$dbdir/" "$dbdir_backup"
   echo "Existing database backed up"
