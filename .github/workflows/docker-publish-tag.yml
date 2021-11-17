@@ -67,7 +67,7 @@ jobs:
             ${{ env.IMAGE_NAME }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=tag
+            type=semver,pattern={{raw}}
           flavor: |
             latest=true
             prefix=
