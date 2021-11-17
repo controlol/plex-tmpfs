@@ -1,5 +1,8 @@
 name: Create tag version
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '45 * * * *'
