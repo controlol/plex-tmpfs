@@ -25,14 +25,14 @@ jobs:
       packages: write
 
     steps:
-      - name: Get Latest Tag
-        id: latesttag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
-    
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          
+      - name: Get Latest Tag
+        id: latesttag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
           
       - name: checkout to latest tag
         run: git checkout tags/${{ steps.latesttag.outputs.tag }} -b latest
