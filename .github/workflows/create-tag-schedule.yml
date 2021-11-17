@@ -43,3 +43,4 @@ jobs:
           body: "Automatic version bump to ${{ steps.binhextag.outputs.tag }}"
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
