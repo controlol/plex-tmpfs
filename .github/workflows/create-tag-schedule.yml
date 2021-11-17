@@ -45,4 +45,5 @@ jobs:
           draft: false
           prerelease: false
           allowUpdates: true
+          commit: master
           token: ${{ secrets.GITHUB_TOKEN }}
