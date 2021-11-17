@@ -40,6 +40,7 @@ jobs:
         uses: ncipollo/release-action@v1.8.10
         with:
           tag_name: ${{ steps.binhextag.outputs.tag }}
+          tag: ${{ steps.binhextag.outputs.tag }}
           body: "Automatic version bump to ${{ steps.binhextag.outputs.tag }}"
           draft: false
           prerelease: false
