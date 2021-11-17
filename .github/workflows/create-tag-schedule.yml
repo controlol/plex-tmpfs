@@ -21,6 +21,8 @@ jobs:
       - name: Get Latest Tag
         id: latesttag
         uses: WyriHaximus/github-action-get-previous-tag@v1
+        
+      - run: git checkout master
 
       - name: Get binhex/arch-plex release
         id: binhextag
