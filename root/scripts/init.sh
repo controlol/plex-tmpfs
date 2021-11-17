@@ -20,7 +20,7 @@ fi
 # database should only be copied to tmpfs if it is empty
 if [[ ( ! -d "$dbdir_tmp" ) || ( -d "$dbdir_tmp" && ! "$(ls -A $dbdir_tmp)" ) ]]; then
   echo "Copying database to tmpfs..."
-  rsync -acz --delete "$dbdir_backup/" "$dbdir_tmp"
+  rsync -acz --delete --stats -h "$dbdir_backup/" "$dbdir_tmp" | grep "Total file size"
   echo "Database copied to tmpfs"
 fi
 
@@ -48,6 +48,7 @@ trap 'backup' SIGINT SIGTERM
 
 # start command
 runuser -u nobody -- /home/nobody/start.sh &
+echo "Plex server has started"
 
 # wait forr the pid of the last exectued command
 wait $!
