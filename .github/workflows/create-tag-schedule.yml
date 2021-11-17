@@ -1,8 +1,5 @@
 name: Create tag version
 
-permissions:
-  contents: write
-
 on:
   schedule:
     - cron: '45 * * * *'
@@ -37,13 +34,12 @@ jobs:
 
       - name: Create Release
         if: ${{ steps.latesttag.outputs.tag }} != ${{ steps.binhextag.outputs.tag }}
-        uses: ncipollo/release-action@v1.8.10
+        uses: softprops/action-gh-release@v0.1.13
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           tag_name: ${{ steps.binhextag.outputs.tag }}
-          tag: ${{ steps.binhextag.outputs.tag }}
+          name: ${{ steps.binhextag.outputs.tag }}
           body: "Automatic version bump to ${{ steps.binhextag.outputs.tag }}"
           draft: false
           prerelease: false
-          allowUpdates: true
-          commit: master
-          token: ${{ secrets.GITHUB_TOKEN }}
