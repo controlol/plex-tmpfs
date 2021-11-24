@@ -1,13 +1,12 @@
 FROM hotio/plex
 
 RUN set -ex; \
+    apt update; \
     apt install --no-install-recommends -y \
-        cron
+        cron; \
+    rm -rf /var/lib/apt/lists/*
 
-ADD ./root/services /etc/supervisor/conf.d/
-
-ADD ./root/scripts /scripts
+ADD ./root /
 
 RUN set -ex; \
-    chmod +x /scripts/*.sh; \
-    crontab /scripts/cron-backup
+    crontab /etc/crontab/root
