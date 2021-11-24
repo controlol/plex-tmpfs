@@ -32,7 +32,7 @@ jobs:
             echo "INVALID RELEASE"
             exit 1
           fi
-          ::set-output name=tag::${EXT_RELEASE}
+          echo '::set-output name=tag::${EXT_RELEASE}'
           echo ${EXT_RELEASE} - ${{ steps.latesttag.outputs.tag }}
 
       - name: Create Release
