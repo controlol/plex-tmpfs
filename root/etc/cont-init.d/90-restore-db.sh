@@ -2,10 +2,10 @@
 
 set -e
 
-dbdir="/config/Plex Media Server/Plug-in Support/Databases"
+dbdir_parent="/config/Plug-in Support"
+dbdir="${dbdir_parent}/Plug-in Support/Databases"
 dbdir_tmp="/plex-db"
 dbdir_backup="/config/backup-databases"
-dbdir_parent="/config/Plex Media Server/Plug-in Support"
 
 mkdir -p "$dbdir_backup"
 mkdir -p "cachedir_tmp"
