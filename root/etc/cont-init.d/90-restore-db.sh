@@ -25,8 +25,8 @@ if [[ ( ! -d "$dbdir_tmp" ) || ( -d "$dbdir_tmp" && ! "$(ls -A $dbdir_tmp)" ) ]]
 fi
 
 # link tmpfs database to original database
-if [[ ! "$(find "$dbdir_parent" -lname $dbdir_tmp)" ]]; then
-  if [[ -f "$dbdir" ]]; then
+if [[ ! "$(find "$dbdir_parent" -maxdepth 1 -lname $dbdir_tmp)" ]]; then
+  if [[ -e "$dbdir" ]]; then
     rm -r "$dbdir"
   fi
 
