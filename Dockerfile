@@ -10,4 +10,4 @@ RUN set -ex; \
 ADD ./root /
 
 RUN set -ex; \
-    crontab /etc/crontab/root
+    chmod +x /scripts/backup-db.sh

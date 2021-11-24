@@ -1,1 +1,0 @@
-0 3 * * * /scripts/backup-db.sh
