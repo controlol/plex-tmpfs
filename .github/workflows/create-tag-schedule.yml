@@ -32,7 +32,8 @@ jobs:
             echo "INVALID RELEASE"
             exit 1
           fi
-          echo "::set-output name=tag::${EXT_RELEASE}"
+          ::set-output name=tag::${EXT_RELEASE}
+          echo ${EXT_RELEASE} - ${{ steps.latesttag.outputs.tag }}
 
       - name: Create Release
         if: ${{ steps.latesttag.outputs.tag }} != ${{ steps.binhextag.outputs.tag }}
