@@ -3,7 +3,7 @@
 set -e
 
 dbdir_parent="/config/Plug-in Support"
-dbdir="${dbdir_parent}/Plug-in Support/Databases"
+dbdir="${dbdir_parent}/Databases"
 dbdir_tmp="/plex-db"
 dbdir_backup="/config/backup-databases"
 
