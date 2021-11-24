@@ -1,13 +1,13 @@
-FROM binhex/arch-plex
+FROM hotio/plex
 
 RUN set -ex; \
-    pacman -S --noconfirm \
-        cronie
+    apt update; \
+    apt install --no-install-recommends -y \
+        rsync \
+        cron; \
+    rm -rf /var/lib/apt/lists/*
 
-ADD ./root/services /etc/supervisor/conf.d/
-
-ADD ./root/scripts /scripts
+ADD ./root /
 
 RUN set -ex; \
-    chmod +x /scripts/*.sh; \
-    crontab /scripts/cron-backup
+    crontab /etc/crontab/root
