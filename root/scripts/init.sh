@@ -2,6 +2,9 @@
 
 set -e
 
+# set TRANS_DIR to default value if not set
+export TRANS_DIR="${TRANS_DIR:-/config/tmp}"
+
 dbdir="/config/Plex Media Server/Plug-in Support/Databases"
 dbdir_tmp="/plex-db"
 dbdir_backup="/config/backup-databases"
@@ -9,6 +12,8 @@ dbdir_parent="/config/Plex Media Server/Plug-in Support"
 
 mkdir -p "$dbdir_backup"
 mkdir -p "cachedir_tmp"
+
+chown -R nobody:users "$TRANS_DIR"
 
 # copy database to backup folder if it does not exist
 if [[ ( ! -d "$dbdir_backup" ) || ( -d "$dbdir_backup" && ! "$(ls -A $dbdir_backup)" ) ]]; then
