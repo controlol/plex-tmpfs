@@ -18,29 +18,36 @@ jobs:
         with:
           fetch-depth: 0
         
-      - name: Get Latest Tag
+      - name: Get Current Tag
         id: latesttag
         uses: WyriHaximus/github-action-get-previous-tag@v1
         
       - run: git checkout master
 
-      - name: Get binhex/arch-plex release
-        id: binhextag
+      - name: Get Current hotio/plex Version
+        id: hotiotag
         run: |
-          EXT_RELEASE=$(curl -s "https://api.github.com/repos/binhex/arch-plex/releases/latest" | jq -r '. | .tag_name')
+          EXT_RELEASE=$(curl -s "https://raw.githubusercontent.com/hotio/plex/master/tags.json" | jq -r '. | .tags.version')
           if [ -z "${EXT_RELEASE}" ] || [ "${EXT_RELEASE}" == "null" ]; then
             echo "INVALID RELEASE"
             exit 1
           fi
           echo "::set-output name=tag::${EXT_RELEASE}"
+          
+      - name: Check Version Bump
+        run: |
+          echo "\"${{ steps.latesttag.outputs.tag }}\" - \"${{ steps.hotiotag.outputs.tag }}\""
+          if [ "${{ steps.latesttag.outputs.tag }}" == "${{ steps.hotiotag.outputs.tag }}" ]; then
+            echo "No new release!"
+            exit 0
+          fi
 
       - name: Create Release
-        if: ${{ steps.latesttag.outputs.tag }} != ${{ steps.binhextag.outputs.tag }}
         uses: softprops/action-gh-release@v0.1.14
         with:
-          tag_name: ${{ steps.binhextag.outputs.tag }}
-          name: ${{ steps.binhextag.outputs.tag }}
-          body: "Automatic version bump to ${{ steps.binhextag.outputs.tag }}"
+          tag_name: ${{ steps.hotiotag.outputs.tag }}
+          name: ${{ steps.hotiotag.outputs.tag }}
+          body: "Automatic version bump to ${{ steps.hotiotag.outputs.tag }}"
           draft: false
           prerelease: false
           token: ${{ secrets.REPO_TOKEN }}
