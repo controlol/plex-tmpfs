@@ -1,1 +1,1 @@
-0 3 * * * /scripts/backup.sh
+0 3 * * * /etc/cont-finish.d/backup-db.sh
