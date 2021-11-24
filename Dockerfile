@@ -1,8 +1,8 @@
-FROM binhex/arch-plex
+FROM hotio/plex
 
 RUN set -ex; \
-    pacman -S --noconfirm \
-        cronie
+    apt install --no-install-recommends -y \
+        cron
 
 ADD ./root/services /etc/supervisor/conf.d/
 
