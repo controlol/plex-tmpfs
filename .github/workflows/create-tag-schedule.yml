@@ -33,7 +33,7 @@ jobs:
             exit 1
           fi
           echo "::set-output name=tag::${EXT_RELEASE}"
-          
+
       - name: Check Version Bump
         run: |
           echo "\"${{ steps.latesttag.outputs.tag }}\" - \"${{ steps.hotiotag.outputs.tag }}\""
