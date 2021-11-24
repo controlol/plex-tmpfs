@@ -27,7 +27,7 @@ jobs:
       - name: Get Current hotio/plex Version
         id: hotiotag
         run: |
-          EXT_RELEASE=$(curl -s "https://raw.githubusercontent.com/hotio/plex/master/tags.json" | jq -r '. | .tags.version')
+          EXT_RELEASE=$(curl -s "https://raw.githubusercontent.com/hotio/plex/master/tags.json" | jq -r '. | .tags[] | select(.name == "release") | .version')
           if [ -z "${EXT_RELEASE}" ] || [ "${EXT_RELEASE}" == "null" ]; then
             echo "INVALID RELEASE"
             exit 1
