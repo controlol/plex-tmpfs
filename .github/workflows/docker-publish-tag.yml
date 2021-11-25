@@ -8,7 +8,6 @@ name: Docker Publish Tag
 on:
   release:
     types: [created,edited]
-  workflow_dispatch:
 
 env:
   # Use docker.io for Docker Hub if empty
