@@ -1,0 +1,68 @@
+name: Create tag version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  getRelease:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+        
+      - name: Get Current Tag
+        id: latesttag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+        
+      - run: git checkout master
+
+      - name: Get Current hotio/plex Version
+        id: hotiotag
+        run: |
+          EXT_RELEASE=$(curl -s "https://raw.githubusercontent.com/hotio/plex/master/tags.json" | jq -r '. | .tags[] | select(.name == "release") | .version')
+          if [ -z "${EXT_RELEASE}" ] || [ "${EXT_RELEASE}" == "null" ]; then
+            echo "INVALID RELEASE"
+            exit 1
+          fi
+          echo "::set-output name=tag::${EXT_RELEASE}"
+
+      - name: Check Version Bump
+        id: bump
+        run: |
+          echo "\"${{ steps.latesttag.outputs.tag }}\" - \"${{ steps.hotiotag.outputs.tag }}\""
+          if [[ ${{ github.event }} == "workflow_dispatch" && "${{ steps.latesttag.outputs.tag }}" == "${{ steps.hotiotag.outputs.tag }}" ]]; then
+            echo "::set-output name=intermediate::true"
+          elif [ "${{ steps.latesttag.outputs.tag }}" == "${{ steps.hotiotag.outputs.tag }}" ]; then
+            echo "No new release!"
+            exit 0
+          fi
+          
+      - name: Generate Sementic Intermediate Version
+        if: ${{ steps.bump.outputs.intermediate == "true" }}
+        id: version
+        run: |
+          version=${{ steps.hotiotag.outputs.tag }}
+          version="${version: -2}" # get last two characters
+          if [ "${version::1}" == "-" ]; then       # this is already is a intermediate version, bump it
+            intermediate=$(( ${version: -1} + 1 ))
+          else                                      # create intermediate version
+            intermediate=1
+          fi
+          echo "::set-output name=tag::${{ steps.hotio.outputs.tag }}${intermediate}" # output the intermediate version
+          
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v0.1.14
+        with:
+          tag_name: ${{ steps.version.outputs.tag }} || ${{ steps.hotiotag.outputs.tag }}
+          name: ${{ steps.hotiotag.outputs.tag }}
+          body: "Automatic version bump to ${{ steps.hotiotag.outputs.tag }}"
+          draft: false
+          prerelease: false
+          token: ${{ secrets.REPO_TOKEN }}
