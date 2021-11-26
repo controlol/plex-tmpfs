@@ -89,7 +89,7 @@ jobs:
         id: body
         run: |
           if [ "${{ steps.v_bump.outputs.intermediate }}" == "true" ]; then
-            echo "::set-output name=message::Manual update to intermediate version ${{ steps.v_release.outputs.intermediate }}. A intermediate update only includes changes made in this repository, thus this is a new Plex update."
+            echo "::set-output name=message::Manual update to intermediate version ${{ steps.v_release.outputs.intermediate }}. A intermediate update only includes changes made in this repository, meaning this is not a new Plex update."
           else
             echo "::set-output name=message::Automatic version bump to ${{ steps.t_hotio.outputs.tag }}"
           fi
