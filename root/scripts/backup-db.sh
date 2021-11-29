@@ -8,7 +8,7 @@ if [ ! -f "$status_file" ]; then
   touch "$status_file"
   echo "starting database backup"
 
-  rsync -acz --delete "$dbdir_tmp/" "$dbdir_backup"
+  rsync -ac --delete "$dbdir_tmp/" "$dbdir_backup"
 
   unlink "$status_file"
   echo "database backup succesful"
