@@ -1,6 +1,6 @@
 {
   "name": "latest",
-  "version": "steps.t_hotio.outputs.tag",
-  "commit": "$(git rev-parse --short HEAD)",
-  "lastUpdated": "2022-03-06T09:44:26.397Z"
+  "version": "1.25.6.5577-c8bd13540",
+  "commit": "2ab668a",
+  "lastUpdated": "2022-03-06T09:54:05.767Z"
 }
