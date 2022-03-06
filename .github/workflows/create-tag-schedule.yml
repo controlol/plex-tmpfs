@@ -13,11 +13,11 @@ jobs:
       packages: write
     
     outputs:
-      release: steps.v_bump.outputs.release
-      hotio_version: steps.t_hotio.outputs.tag
-      intermediate: steps.v_bump.outputs.intermediate
-      intermediate_number: steps.v_release.outputs.intermediate
-      intermediate_version: steps.v_release.outputs.tag
+      release: ${{ steps.v_bump.outputs.release }} # boolean
+      hotio_version: ${{ steps.t_hotio.outputs.tag }}
+      intermediate: ${{ steps.v_bump.outputs.intermediate }}
+      intermediate_number: ${{ steps.v_release.outputs.intermediate }}
+      intermediate_version: ${{ steps.v_release.outputs.tag }}
       
     steps:
       - name: Checkout repository
@@ -79,7 +79,7 @@ jobs:
           fi
 
       - name: Generate Intermediate Version
-        if: ${{ steps.v_bump.outputs.intermediate == 'true' }}
+        if: steps.v_bump.outputs.intermediate == 'true'
         id: v_release
         run: |
           if [ "${{ steps.t_intermediate.outputs.is_intermediate }}" == "true" ]; then    # this is already is a intermediate version, bump it
@@ -94,11 +94,20 @@ jobs:
   update_tags:
     runs-on: ubuntu-latest
     needs: create_version_number
-    if: ${{ needs.create_version_number.outputs.release == "true" && needs.create_version_number.outputs.intermediate != "true" }}
+    if: needs.create_version_number.outputs.release == 'true' && needs.create_version_number.outputs.intermediate != 'true'
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: Get short sha
+        id: sha
+        run: echo "::set-output name=short::$(git rev-parse --short HEAD)"
+
       - name: Update tags.json
         env:
-          SHA_SHORT: $(git rev-parse --short HEAD)
+          SHA_SHORT: ${{ steps.sha.outputs.short }}
           VERSION: ${{ needs.create_version_number.outputs.hotio_version }}
         shell: bash
         run: |
@@ -119,7 +128,7 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     needs: [ update_tags, create_version_number ]
-    if: ${{ needs.create_version_number.outputs.release == "true" }}
+    if: needs.create_version_number.outputs.release == 'true' && github.ref == 'master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
