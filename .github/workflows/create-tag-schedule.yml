@@ -13,11 +13,11 @@ jobs:
       packages: write
     
     outputs:
-      release: steps.v_bump.outputs.release
-      hotio_version: steps.t_hotio.outputs.tag
-      intermediate: steps.v_bump.outputs.intermediate
-      intermediate_number: steps.v_release.outputs.intermediate
-      intermediate_version: steps.v_release.outputs.tag
+      release: ${{ steps.v_bump.outputs.release }}
+      hotio_version: ${{ steps.t_hotio.outputs.tag }}
+      intermediate: ${{ steps.v_bump.outputs.intermediate }}
+      intermediate_number: ${{ steps.v_release.outputs.intermediate }}
+      intermediate_version: ${{ steps.v_release.outputs.tag }}
       
     steps:
       - name: Checkout repository
@@ -103,7 +103,7 @@ jobs:
 
       - name: Update tags.json
         env:
-          SHA_SHORT: $(git rev-parse --short HEAD)
+          SHA_SHORT: ${{ $(git rev-parse --short HEAD) }}
           VERSION: ${{ needs.create_version_number.outputs.hotio_version }}
         shell: bash
         run: |
