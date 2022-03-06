@@ -124,7 +124,7 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     needs: [ update_tags, create_version_number ]
-    if: ${{ needs.create_version_number.outputs.release == 'true' }}
+    if: ${{ needs.create_version_number.outputs.release == 'true' }} && $(git branch --show-current) == 'master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
