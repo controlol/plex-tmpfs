@@ -14,7 +14,6 @@ jobs:
     
     outputs:
       release: ${{ steps.v_bump.outputs.release }} # boolean
-      branch: ${{ steps.branch.outputs.current }}
       hotio_version: ${{ steps.t_hotio.outputs.tag }}
       intermediate: ${{ steps.v_bump.outputs.intermediate }}
       intermediate_number: ${{ steps.v_release.outputs.intermediate }}
