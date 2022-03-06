@@ -96,6 +96,11 @@ jobs:
     needs: create_version_number
     if: ${{ needs.create_version_number.outputs.release == 'true' }} && ${{ needs.create_version_number.outputs.intermediate != 'true' }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Update tags.json
         env:
           SHA_SHORT: $(git rev-parse --short HEAD)
