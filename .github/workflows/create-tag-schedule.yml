@@ -76,6 +76,7 @@ jobs:
             echo "::set-output name=release::true"
           else
             echo "::notice ::Not Updating Because There Is No New hotio/plex Release"
+            echo "::set-output name=release::false"
           fi
 
       - name: Generate Intermediate Version
