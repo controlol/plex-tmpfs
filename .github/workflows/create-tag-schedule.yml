@@ -74,9 +74,11 @@ jobs:
           elif [ "${{ steps.v_plex.outputs.version }}" != "${{ steps.t_hotio.outputs.tag }}" ]; then
             echo "::notice ::Creating Tag With New hotio/plex Release"
             echo "::set-output name=release::true"
+            echo "::set-output name=intermediate::false"
           else
             echo "::notice ::Not Updating Because There Is No New hotio/plex Release"
             echo "::set-output name=release::false"
+            echo "::set-output name=intermediate::false"
           fi
 
       - name: Generate Intermediate Version
