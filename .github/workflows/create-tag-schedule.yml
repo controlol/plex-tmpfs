@@ -109,7 +109,7 @@ jobs:
   update_tags:
     runs-on: ubuntu-latest
     needs: create_version_number
-    if: needs.create_version_number.outputs.release == 'true' && needs.create_version_number.outputs.intermediate != 'true' && github.ref == 'master'
+    if: needs.create_version_number.outputs.release == 'true' && needs.create_version_number.outputs.intermediate != 'true' && github.ref_name == 'master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
