@@ -10,4 +10,4 @@ RUN set -ex; \
 ADD ./root /
 
 RUN set -ex; \
-    chmod +x /scripts/backup-db.sh
+    chmod +x /scripts/backup-db.sh /etc/cont-init.d/*.sh
