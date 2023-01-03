@@ -1,4 +1,4 @@
-[<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/controlol/plex-tmpfs/Docker%20Publish%20Tag?logo=github" />](https://github.com/controlol/plex-tmpfs/actions/workflows/docker-publish-tag.yml)
+[<img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/controlol/plex-tmpfs/docker-publish-tag.yml?logo=github" />](https://github.com/controlol/plex-tmpfs/actions/workflows/docker-publish-tag.yml)
 [<img src="https://img.shields.io/docker/image-size/controlol/plex-tmpfs?logo=docker" alt="Docker Image Size (Latest By Date)"/>](https://hub.docker.com/r/controlol/plex-tmpfs)
 [<img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/controlol/plex-tmpfs" />](https://hub.docker.com/r/controlol/plex-tmpfs)
 [<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/controlol/plex-tmpfs?logo=plex" />](https://github.com/controlol/plex-tmpfs/releases)
