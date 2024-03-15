@@ -1,11 +1,8 @@
 FROM hotio/plex
 
 RUN set -ex; \
-    apt update; \
-    apt install --no-install-recommends -y \
-        rsync \
-        cron; \
-    rm -rf /var/lib/apt/lists/*
+    apk add --no-cache \
+        rsync
 
 ADD ./root /
 
