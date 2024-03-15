@@ -154,9 +154,9 @@ jobs:
         id: body
         run: |
           if [ "${{ needs.create_version_number.outputs.intermediate }}" == "true" ]; then
-            echo "message::Manual update to intermediate version ${{ needs.create_version_number.outputs.intermediate_number }}. A intermediate update only includes changes made in this repository, meaning this is not a new Plex update." >> $GITHUB_OUTPUT
+            echo "message=Manual update to intermediate version ${{ needs.create_version_number.outputs.intermediate_number }}. A intermediate update only includes changes made in this repository, meaning this is not a new Plex update." >> $GITHUB_OUTPUT
           else
-            echo "message::Automatic version bump to ${{ needs.create_version_number.outputs.hotio_version }}" >> $GITHUB_OUTPUT
+            echo "message=Automatic version bump to ${{ needs.create_version_number.outputs.hotio_version }}" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Release
