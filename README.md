@@ -4,7 +4,7 @@
 [<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/controlol/plex-tmpfs?logo=plex" />](https://github.com/controlol/plex-tmpfs/releases)
 
 # Plex tmpfs
-A docker image based of binhex/arch-plex but with tmpfs
+A docker image based of hotio/plex but with tmpfs for super fast database storage
 
 ## Why was this image created
 Ever thought to yourself: "Why is Plex so slow" while browsing your Plex library? Well I certainly did! The database chosen by Plex is unfortunately not intended for large datasets. Moving the database to RAM finally solved the problem of slow loading pages in Plex. After doing this for about a year now on [Unraid OS](https://unraid.net/product) which already has a easily accessable RAM disk by default. I thought it would be useful to implement this in a docker image so it is easy to replicate on other systems.
