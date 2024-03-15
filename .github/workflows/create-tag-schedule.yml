@@ -32,12 +32,12 @@ jobs:
       - name: Get Current hotio/plex Version
         id: t_hotio
         run: |
-          EXT_RELEASE=$(curl -s "https://raw.githubusercontent.com/hotio/plex/release/VERSION.json" | jq -r '. | .version')
+          EXT_RELEASE=$(curl -s "https://raw.githubusercontent.com/hotio/plex/master/tags.json" | jq -r '. | .release.tags[1]')
           if [ -z "${EXT_RELEASE}" ] || [ "${EXT_RELEASE}" == "null" ]; then
             echo "::error ::Invalid hotio Release"
             exit 1
           fi
-          echo "::set-output name=tag::${EXT_RELEASE}"
+          echo "tag=${EXT_RELEASE}" >> $GITHUB_OUTPUT
 
       - name: Is Current Release Intermediate
         id: t_intermediate
@@ -49,8 +49,8 @@ jobs:
                 echo "::error ::WOW, you have created 9 intermediate releases! Take it slow or create a release manually."
                 exit 1
               fi
-            echo "::set-output name=is_intermediate::true"
-            echo "::set-output name=version::${version: -1}"
+            echo "is_intermediate=true" >> $GITHUB_OUTPUT
+            echo "version=${version: -1}" >> $GITHUB_OUTPUT
           fi
 
       - name: Get Version Without Intermediate
@@ -58,9 +58,9 @@ jobs:
         run: |
           version=${{ steps.t_latest.outputs.tag }}
           if [ "${{ steps.t_intermediate.outputs.is_intermediate }}" == "true" ]; then
-            echo "::set-output name=version::${version::-2}" # latest tag without the last two characters
+            echo "version=${version::-2}" >> $GITHUB_OUTPUT # latest tag without the last two characters
           else
-            echo "::set-output name=version::${version}" # not a intermediate version
+            echo "version=${version}" >> $GITHUB_OUTPUT # not a intermediate version
           fi
 
       - name: Check Version Bump
@@ -69,16 +69,16 @@ jobs:
           echo "\"${{ steps.t_latest.outputs.tag }}\" - \"${{ steps.t_hotio.outputs.tag }}\""
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ steps.v_plex.outputs.version }}" == "${{ steps.t_hotio.outputs.tag }}" ]]; then
             echo "::warning ::Creating Intermediate Tag Release By Manual Trigger"
-            echo "::set-output name=intermediate::true"
-            echo "::set-output name=release::true"
+            echo "intermediate=true" >> $GITHUB_OUTPUT
+            echo "release=true" >> $GITHUB_OUTPUT
           elif [ "${{ steps.v_plex.outputs.version }}" != "${{ steps.t_hotio.outputs.tag }}" ]; then
             echo "::notice ::Creating Tag With New hotio/plex Release"
-            echo "::set-output name=release::true"
-            echo "::set-output name=intermediate::false"
+            echo "release=true" >> $GITHUB_OUTPUT
+            echo "intermediate=false" >> $GITHUB_OUTPUT
           else
             echo "::notice ::Not Updating Because There Is No New hotio/plex Release"
-            echo "::set-output name=release::false"
-            echo "::set-output name=intermediate::false"
+            echo "release=false" >> $GITHUB_OUTPUT
+            echo "intermediate=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Generate Intermediate Version
@@ -91,8 +91,8 @@ jobs:
           else                                                                            # create intermediate version
             intermediate=1
           fi
-          echo "::set-output name=intermediate::${intermediate}"                          # output intermediate version number
-          echo "::set-output name=tag::${{ steps.t_hotio.outputs.tag }}-${intermediate}"  # output the intermediate version
+          echo "intermediate=${intermediate}" >> $GITHUB_OUTPUT                          # output intermediate version number
+          echo "tag=${{ steps.t_hotio.outputs.tag }}-${intermediate}" >> $GITHUB_OUTPUT  # output the intermediate version
 
   print_outputs:
     runs-on: ubuntu-latest
@@ -118,7 +118,7 @@ jobs:
           
       - name: Get short sha
         id: sha
-        run: echo "::set-output name=short::$(git rev-parse --short HEAD)"
+        run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Update tags.json
         env:
@@ -154,9 +154,9 @@ jobs:
         id: body
         run: |
           if [ "${{ needs.create_version_number.outputs.intermediate }}" == "true" ]; then
-            echo "::set-output name=message::Manual update to intermediate version ${{ needs.create_version_number.outputs.intermediate_number }}. A intermediate update only includes changes made in this repository, meaning this is not a new Plex update."
+            echo "message::Manual update to intermediate version ${{ needs.create_version_number.outputs.intermediate_number }}. A intermediate update only includes changes made in this repository, meaning this is not a new Plex update." >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=message::Automatic version bump to ${{ needs.create_version_number.outputs.hotio_version }}"
+            echo "message::Automatic version bump to ${{ needs.create_version_number.outputs.hotio_version }}" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Release
