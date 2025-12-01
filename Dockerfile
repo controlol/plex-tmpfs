@@ -1,4 +1,4 @@
-FROM hotio/plex
+FROM ghcr.io/hotio/plex
 
 RUN apt update && \
     apt install -y --no-install-recommends --no-install-suggests \
